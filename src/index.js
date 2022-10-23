@@ -44,30 +44,48 @@ function importElm() {
   const textSearchs = subBtn[0].value;
 
   fetchApi(textSearchs, page)
-    .then(result => creatElmHtml(result))
+    .then(result => creatError(result))
 
-    .catch(err =>
-      Notiflix.Notify.failure(
-        "We're sorry, but you've reached the end of search results."
-      )
+    .catch(
+      err => console.log(err)
+      // Notiflix.Notify.failure(
+      //   "We're sorry, but you've reached the end of search results."
+      // )
     );
 }
 
-function creatElmHtml(objImages) {
-  if (objImages.total === 0) {
-    Notiflix.Notify.failure(
-      'Sorry, there are no images matching your search query. Please try again.'
-    );
-    throw new Error(response.status);
-  } else if (totalSymImage >= objImages.totalHits) {
+function creatError(objImages) {
+  if (totalSymImage >= objImages.totalHits && objImages.totalHits > 40) {
     Notiflix.Notify.failure(
       "We're sorry, but you've reached the end of search results."
     );
-    throw new Error(response.status);
+    return;
+  } else if (objImages.total === 0) {
+    Notiflix.Notify.failure(
+      'Sorry, there are no images matching your search query. Please try again.'
+    );
+    return;
   } else if (page === 1) {
     Notiflix.Notify.success(`Hooray! We found ${objImages.totalHits} images.`);
+    creatElmHtml(objImages);
   }
+}
 
+function addElmHtml(arr) {
+  gallery.insertAdjacentHTML('beforeend', arr);
+  lightbox();
+  page++;
+  observer.observe(guard);
+}
+
+function lightbox() {
+  const lightbox = new SimpleLightbox('.gallery a', {
+    captionsData: 'alt',
+    captionDelay: 250,
+    overlayOpacity: 0.7,
+  });
+}
+function creatElmHtml(objImages) {
   const arrObjElm = objImages.hits;
   totalSymImage += arrObjElm.length;
 
@@ -104,24 +122,3 @@ function creatElmHtml(objImages) {
 
   addElmHtml(markup.join(' '));
 }
-
-function addElmHtml(arr) {
-  gallery.insertAdjacentHTML('beforeend', arr);
-  page++;
-  observer.observe(guard);
-}
-
-const lightbox = new SimpleLightbox('.gallery a', {
-  captionsData: 'alt',
-  captionDelay: 250,
-  overlayOpacity: 0.7,
-});
-
-const { height: cardHeight } = document
-  .querySelector('.gallery')
-  .firstElementChild.getBoundingClientRect();
-
-window.scrollBy({
-  top: cardHeight * 2,
-  behavior: 'smooth',
-});
