@@ -30,6 +30,9 @@ function onLoad(entries) {
 
 function onSubmit(evt) {
   evt.preventDefault();
+  if (observer) {
+    observer.disconnect();
+  }
   zeroing();
   importElm();
 }
@@ -42,33 +45,39 @@ function zeroing() {
 
 function importElm() {
   const textSearchs = subBtn[0].value;
-
   fetchApi(textSearchs, page)
-    .then(result => creatError(result))
+    .then(result => {
+      if (result.totalHits === 0) {
+        Notiflix.Notify.failure(
+          'Sorry, there are no images matching your search query. Please try again.'
+        );
+        throw new Error(response.status);
+      }
+      creatE(result);
+    })
 
-    .catch(
-      err => console.log(err)
-      // Notiflix.Notify.failure(
-      //   "We're sorry, but you've reached the end of search results."
-      // )
-    );
+    .catch(err => {
+      console.log(err);
+    });
 }
 
-function creatError(objImages) {
-  if (totalSymImage >= objImages.totalHits && objImages.totalHits > 40) {
+function creatE(objImages) {
+  if (objImages.hits[0] === undefined) {
+    if (observer) {
+      observer.disconnect();
+    }
     Notiflix.Notify.failure(
       "We're sorry, but you've reached the end of search results."
     );
     return;
-  } else if (objImages.total === 0) {
-    Notiflix.Notify.failure(
-      'Sorry, there are no images matching your search query. Please try again.'
-    );
-    return;
-  } else if (page === 1) {
+  }
+
+  if (page === 1) {
     Notiflix.Notify.success(`Hooray! We found ${objImages.totalHits} images.`);
     creatElmHtml(objImages);
+    return;
   }
+  creatElmHtml(objImages);
 }
 
 function addElmHtml(arr) {
