@@ -12,9 +12,12 @@ body {
     Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #fafafa;
+  background-color: teal;
   color: #212121;
   line-height: 1.5;
+}
+.noScroll {
+  overflow-y: hidden;
 }
 
 .form__input {
@@ -33,13 +36,50 @@ body {
   margin-bottom: 20px;
 }
 
-.form__btn {
-  height: 35px;
-  width: 50px;
-  display: flex;
+.form__btn,
+.form__story {
+  padding: 9px 20px;
 
-  justify-content: center;
-  align-items: center;
+  border: none;
+
+  text-align: center;
+  text-decoration: none;
+}
+
+.form__story {
+  margin-left: 10px;
+}
+
+.btn__dellet {
+  background-color: #e7e7e7;
+  color: black;
+  border: none;
+  border-radius: 50px;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  opacity: 0.8;
+}
+
+.btn__dellet,
+.form__btn,
+.form__story,
+.item__story {
+  transition-property: background-color;
+  transition-duration: 250ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn__dellet:focus,
+.btn__dellet:hover,
+.form__btn:focus,
+.form__btn:hover,
+.form__story:focus,
+.form__story:hover {
+  background-color: teal;
 }
 .gallery {
   display: flex;
@@ -68,4 +108,62 @@ body {
 .gallery__item {
   color: #000;
   text-decoration: none;
+}
+
+.history {
+  position: absolute;
+  width: 400px;
+  border: solid blue 5px;
+  border-radius: 5%;
+  overflow: auto;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.list__story {
+  list-style-type: none;
+}
+
+.text__story {
+  padding-left: 10px;
+  color: yellow;
+  font-size: 20px;
+}
+.item__story:hover,
+.item__story:focus {
+  background-color: #e7e7e7;
+}
+
+.modal {
+  position: fixed;
+  top: 58px;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  opacity: 0.5;
+}
+.item__story {
+  width: 300px;
+  border-radius: 5px;
+  border: solid red 2px;
+  background-color: teal;
+  text-overflow: ellipsis;
+  overflow: auto;
+  opacity: 1;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  border: 0;
+  padding: 0;
+  white-space: nowrap;
+  clip-path: inset(100%);
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  transition-property: overflow;
+  transition-duration: 250ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }

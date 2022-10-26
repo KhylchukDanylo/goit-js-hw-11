@@ -16,11 +16,19 @@
         autocomplete="off"
         placeholder="Search images..."
       />
-      <button class="form__btn" type="submit">Search</button>
+      <button class="form__btn" disabled="true" type="submit">Search</button>
+      <button class="form__story" type="button">Story</button>
     </form>
+    <button class="btn__dellet" type="button">Clear up</button>
+
+    <div class="modal visually-hidden">
+      <div class="history"></div>
+    </div>
+
     <div class="gallery" id="rgta"></div>
     <div id="scrollArea"></div>
 
     <script src="index.js" type="module"></script>
+    <script src="./js/history.js" type="module"></script>
   </body>
 </html>
